@@ -14,7 +14,7 @@ class Dish(Base):
     price = Column(Numeric(scale=2), nullable=False)
 
     # relations
-    submenu_id = Column(Integer, ForeignKey("submenus.id"))
+    submenu_id = Column(Integer, ForeignKey("submenus.id", ondelete="CASCADE"))
     submenu = relationship("Submenu", back_populates="dishes")
 
 
@@ -27,8 +27,8 @@ class Submenu(Base):
     description = Column(String, nullable=False)
 
     # relations
-    dishes = relationship("Dish", back_populates="submenu")
-    menu_id = Column(Integer, ForeignKey("menus.id"))
+    dishes = relationship("Dish", cascade='all,delete', back_populates="submenu")
+    menu_id = Column(Integer, ForeignKey("menus.id", ondelete="CASCADE"))
     menu = relationship("Menu", back_populates="submenus")
 
 
@@ -41,4 +41,4 @@ class Menu(Base):
     description = Column(String, nullable=False)
 
     # relations
-    submenus = relationship("Submenu", back_populates="menu")
+    submenus = relationship("Submenu", cascade='all,delete', back_populates="menu")
