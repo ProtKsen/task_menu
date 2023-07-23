@@ -2,7 +2,7 @@
 export
 
 app.run:
-	@poetry run uvicorn main:app --reload
+	@poetry run uvicorn src.main:app --reload
 
 db.run:
 	@docker-compose up -d db
