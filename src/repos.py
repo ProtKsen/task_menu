@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 
-from src.models import Menu, Submenu, Dish
+from src.models import Dish, Menu, Submenu
 
 
 class BaseRepo():

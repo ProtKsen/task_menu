@@ -3,11 +3,12 @@ from typing import List
 from fastapi import APIRouter, status
 
 from src.db import db_session
-from src.models import Menu, Submenu, Dish
-from src.schemas import (MenuCreationSchema, MenuUpdateSchema, MenuFullSchema,
-                         SubmenuCreationSchema, SubmenuUpdateSchema, SubmenuFullSchema,
-                         DishCreationSchema, DishUpdateSchema, DishFullSchema)
-from src.repos import MenuRepo, SubmenuRepo, DishRepo
+from src.models import Dish, Menu, Submenu
+from src.repos import DishRepo, MenuRepo, SubmenuRepo
+from src.schemas import (DishCreationSchema, DishFullSchema, DishUpdateSchema,
+                         MenuCreationSchema, MenuFullSchema, MenuUpdateSchema,
+                         SubmenuCreationSchema, SubmenuFullSchema,
+                         SubmenuUpdateSchema)
 
 router = APIRouter(prefix='/api/v1')
 
