@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, Numeric, String
+from sqlalchemy import Column, ForeignKey, Integer, Float, String
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
@@ -12,7 +12,7 @@ class Dish(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
     description = Column(String, nullable=False)
-    price = Column(Numeric(scale=2), nullable=False)
+    price = Column(Float, nullable=False)
 
     # relations
     submenu_id = Column(Integer, ForeignKey("submenus.id", ondelete="CASCADE"))
