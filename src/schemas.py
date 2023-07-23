@@ -40,3 +40,26 @@ class SubmenuUpdateSchema(BaseModel):
 
 class SubmenuFullSchema(IdConverterMixin, SubmenuCreationSchema):
     dishes_count: int
+
+
+class DishCreationSchema(BaseModel):
+    title: str
+    description: str
+    price: str
+
+    @field_validator('price', mode='before')
+    @classmethod
+    def convert_float_serial(cls, v):
+        if isinstance(v, float):
+            v = str(round(v, 2))
+        return v
+
+
+class DishUpdateSchema(BaseModel):
+    title: Optional[str]
+    description: Optional[str]
+    price: Optional[str]
+
+
+class DishFullSchema(IdConverterMixin, DishCreationSchema):
+    pass

@@ -3,9 +3,11 @@ from typing import List
 from fastapi import APIRouter, HTTPException, status
 
 from src.db import db_session
-from src.models import Menu, Submenu
+from src.models import Menu, Submenu, Dish
 from src.schemas import (MenuCreationSchema, MenuUpdateSchema, MenuFullSchema,
-                         SubmenuCreationSchema, SubmenuUpdateSchema, SubmenuFullSchema)
+                         SubmenuCreationSchema, SubmenuUpdateSchema, SubmenuFullSchema,
+                         DishCreationSchema, DishUpdateSchema, DishFullSchema)
+
 
 router = APIRouter(prefix='/api/v1')
 
@@ -100,3 +102,54 @@ def delete_submenu(submenu_id: int):
     db_session.delete(submenu)
     db_session.commit()
     return {'id': submenu_id}
+
+
+@router.get("/menus/{menu_id}/submenus/{submenu_id}/dishes", response_model=List[DishFullSchema])
+def get_all_dishes(submenu_id: int):
+    return [dish for dish in Dish.query.filter(Dish.submenu_id == submenu_id).all()]
+
+
+@router.get("/menus/{menu_id}/submenus/{submenu_id}/dishes/{dish_id}", response_model=DishFullSchema)
+def get_dish_by_id(dish_id: int):
+    dish = Dish.query.filter(Dish.id == dish_id).first()
+    if not dish:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="dish not found")
+    return dish
+
+
+@router.post("/menus/{menu_id}/submenus/{submenu_id}/dishes", response_model=DishFullSchema, status_code=status.HTTP_201_CREATED)
+def add_dish(submenu_id: int, dish: DishCreationSchema):
+    new_dish = Dish(
+        title=dish.title,
+        description=dish.description,
+        price=float(dish.price),
+        submenu_id=submenu_id
+    )
+    db_session.add(new_dish)
+    db_session.commit()
+    db_session.refresh(new_dish)
+    return new_dish
+
+
+@router.patch("/menus/{menu_id}/submenus/{submenu_id}/dishes/{dish_id}", response_model=DishFullSchema)
+def update_dish(dish_id: int, new_dish: DishUpdateSchema):
+    dish = Dish.query.filter(Dish.id == dish_id).first()
+    if not dish:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="dish not found")
+
+    for attr in dict(new_dish).keys():
+        setattr(dish, attr, getattr(new_dish, attr))
+
+    db_session.commit()
+    db_session.refresh(dish)
+    return dish
+
+
+@router.delete("/menus/{menu_id}/submenus/{submenu_id}/dishes/{dish_id}", status_code=status.HTTP_200_OK)
+def delete_dish(dish_id: int):
+    dish = Dish.query.filter(Dish.id == dish_id).first()
+    if not dish:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="dish not found")
+    db_session.delete(dish)
+    db_session.commit()
+    return {'id': dish_id}
