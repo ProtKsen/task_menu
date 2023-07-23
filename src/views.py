@@ -17,7 +17,7 @@ submenu_repo = SubmenuRepo()
 dish_repo = DishRepo()
 
 
-@router.get("/menus/", response_model=List[MenuFullSchema])
+@router.get("/menus", response_model=List[MenuFullSchema])
 def get_all_menus():
     return [menu for menu in Menu.query.all()]
 
@@ -27,7 +27,7 @@ def get_menu_by_id(menu_id: int):
     return menu_repo.get_by_id(menu_id)
 
 
-@router.post("/menus/", response_model=MenuFullSchema, status_code=status.HTTP_201_CREATED)
+@router.post("/menus", response_model=MenuFullSchema, status_code=status.HTTP_201_CREATED)
 def add_menu(menu: MenuCreationSchema):
     new_menu = Menu(title=menu.title, description=menu.description)
     db_session.add(new_menu)
