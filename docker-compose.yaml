@@ -9,14 +9,5 @@ services:
     networks:
       - api
 
-  webapp:
-    build: .
-    env_file:
-      - .env
-    ports:
-      - 8000:8000
-    networks:
-      - api
-
 networks:
   api:
