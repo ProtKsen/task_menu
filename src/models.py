@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, Numeric, String, ForeignKey
+from sqlalchemy import Column, ForeignKey, Integer, Numeric, String
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
 from src.db import Base
@@ -28,6 +29,12 @@ class Submenu(Base):
 
     # relations
     dishes = relationship("Dish", cascade='all,delete', back_populates="submenu")
+    _dishes_count = Column(Integer)
+
+    @hybrid_property
+    def dishes_count(self):
+        return len(self.dishes)
+
     menu_id = Column(Integer, ForeignKey("menus.id", ondelete="CASCADE"))
     menu = relationship("Menu", back_populates="submenus")
 
@@ -42,3 +49,14 @@ class Menu(Base):
 
     # relations
     submenus = relationship("Submenu", cascade='all,delete', back_populates="menu")
+    _submenus_count = Column(Integer)
+
+    @hybrid_property
+    def submenus_count(self):
+        return len(self.submenus)
+
+    _dishes_count = Column(Integer)
+
+    @hybrid_property
+    def dishes_count(self):
+        return sum([submenu.dishes_count for submenu in self.submenus])
