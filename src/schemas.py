@@ -26,3 +26,17 @@ class MenuUpdateSchema(BaseModel):
 class MenuFullSchema(IdConverterMixin, MenuCreationSchema):
     submenus_count: int
     dishes_count: int
+
+
+class SubmenuCreationSchema(BaseModel):
+    title: str
+    description: str
+
+
+class SubmenuUpdateSchema(BaseModel):
+    title: Optional[str]
+    description: Optional[str]
+
+
+class SubmenuFullSchema(IdConverterMixin, SubmenuCreationSchema):
+    dishes_count: int
