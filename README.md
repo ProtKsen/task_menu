@@ -24,6 +24,11 @@ poetry install
 #### Установка docker, выполняется один раз
 См. <https://docs.docker.com/engine/install/>
 
+#### Установка uvicorn, выполняется один раз
+```bash
+pip install uvicorn
+```
+
 #### Запуск базы данных
 ```bash
 make db.run
