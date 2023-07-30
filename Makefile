@@ -12,3 +12,6 @@ db.makemigrations:
 
 db.migrate:
 	@poetry run alembic upgrade head
+
+app.up:
+	@docker-compose up app

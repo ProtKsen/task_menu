@@ -4,7 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["ProtKen <protcenko.kseniya@gmail.com>"]
 readme = "README.md"
-packages = [{include = "ylab_task_menu"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
